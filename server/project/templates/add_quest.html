@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if role == 'admin' %}
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Create question</h3>
+        <form method="POST" action="/add">
+            <div class="box">
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <div class="notification is-danger">
+                            {{ messages[0] }}
+                        </div>
+                    {% endif %}
+                {% endwith %}
+                <div class="field">
+                    <div class="control">
+                        <input class="input is-large" type="text" name="title" placeholder="Title" autofocus="">
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="field">
+                    <div class="control">
+                        <textarea class="textarea is-link" placeholder="Type here" name="text1"></textarea>
+                    </div>
+                    <div class="control" style="margin: 10px;">
+                        <input type="text" class="input" name='answer1' placeholder="Answer">
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="field">
+                    <div class="control">
+                        <textarea class="textarea is-link" placeholder="Type here" name="text2"></textarea>
+                    </div>
+                    <div class="control" style="margin: 10px;">
+                        <input type="text" class="input" name='answer2' placeholder="Answer">
+                    </div>
+                </div>
+            </div>
+            <div class="box">
+                <div class="field">
+                    <div class="control">
+                        <textarea class="textarea is-link" placeholder="Type here" name="text3"></textarea>
+                    </div>
+                    <div class="control" style="margin: 10px;">
+                        <input type="text" class="input" name='answer3' placeholder="Answer">
+                    </div>
+                </div>
+            </div>
+            <button class="button is-block is-info is-large is-fullwidth">Next</button>
+        </form>
+    </div>
+</div>
+{% else %}
+    <h3 class="title">Are you admin? Go to <a href="/profile" style="color: black">profile</a></h3>
+{% endif %}
+{% endblock %}

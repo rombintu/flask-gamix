@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% for el in question %}
+    <h1 class="title">{{el.title}}</h1>
+    
+        
+        <form method="POST" action="/check">
+            <div>
+                <div class="box">
+                    <div class="field">
+                        <div class="content is-large" style="word-wrap:break-word">
+                            <p>Question 1: {{el.text1}}</p>
+                        </div>
+                        <div class="control" style="margin: 10px; width: 20%;">
+                            <p>Answer: </p>
+                            <input type="text" class="input" name='answer1' placeholder="Type...">
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="field">
+                        <div class="content is-large" style="word-wrap:break-word">
+                            Question 2: {{el.text2}}
+                        </div>
+                        <div class="control" style="margin: 10px; width: 20%;">
+                            <p>Answer: </p>
+                            <input type="text" class="input" name='answer2' placeholder="Type...">
+                        </div>
+                    </div>
+                </div>
+                <div class="box">
+                    <div class="field">
+                        <div class="content is-large" style="word-wrap:break-word">
+                            Question 3: {{el.text3}}
+                        </div>
+                        <div class="control" style="margin: 10px; width: 20%;">
+                            <p>Answer: </p>
+                            <input type="text" class="input" name='answer3' placeholder="Type...">
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <a href="/profile">
+                        <p class="button is-block is-info">Back</p>
+                    </a>
+                    <input type="submit" class="button is-block is-primary" value="Check" id="{{el.id}}">
+                </div>
+            </div>
+        </form>
+        
+            
+            
+    
+    {% endfor %}
+
+{% endblock %}
