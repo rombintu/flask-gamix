@@ -12,9 +12,10 @@ def index():
 @login_required
 def profile():
     if request.method == 'GET':
-        questions = Questions.query.all()
+        uq = Questions.query.filter(Questions.user_questions.any(id=current_user.id)).all()
+
         return render_template('profile.html', 
-                                questions=questions, 
+                                questions=uq, 
                                 name=current_user.name, 
                                 score=current_user.score,
                                 role=current_user.role)
@@ -31,6 +32,12 @@ def add_quest():
             request.form['text3'], request.form['answer3'],)
 
             db.session.add(quest)
+
+            users = User.query.all()
+
+            for user in users:
+                user.user_questions.append(quest)
+                db.session.add(user)
             db.session.commit()
             return redirect('/profile')
         except Exception as e:
@@ -49,16 +56,49 @@ def quest(id):
         quest = Questions.query.filter_by(id=id)
         return render_template('quest.html', question=quest)
         
-# ДОПИЛ
+@main.route('/delete', methods=['POST'])
+@login_required
+def delete_quest():
+    quest_id = request.form.get('id')
+    quest = Questions.query.filter_by(id=quest_id).first()
+    db.session.delete(quest)
+    db.session.commit()
+    
+    return redirect(url_for('main.profile'))
+
 @main.route('/check', methods=['POST'])
 @login_required
 def check():
-    quest_user = [
-        request.form['text1'], request.form['answer1'],
-        request.form['text2'], request.form['answer2'],
-        request.form['text3'], request.form['answer3']
+    if current_user.role == 'admin':
+        return redirect(url_for('main.profile'))
+    quest_user_answers = [
+        request.form['answer1'],
+        request.form['answer2'],
+        request.form['answer3']
     ]
 
-    quest = Questions.query.filter_by(id=id).first()
+    quest = Questions.query.filter_by(id=request.form.get('id')).first()
+    quest_answers = [
+        quest.answer1,
+        quest.answer2,
+        quest.answer3,
+    ]
+    
+    quest_right_answers = list(set(quest_answers) & set(quest_user_answers))
+    
+    score_new = len(quest_right_answers)
+    user = User.query.filter_by(id=current_user.id).first()
+    score_old = current_user.score
+    user.score = score_old + score_new*5
+    print(quest_right_answers)
+
+    sql = f"""DELETE FROM user_questions 
+                WHERE user_id={current_user.id} 
+                    AND question_id={request.form.get('id')}"""
+    db.engine.execute(sql)
+    db.session.commit()
+    
+
+    return redirect(url_for('main.profile'))
     
     

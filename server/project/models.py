@@ -1,17 +1,27 @@
 from flask_login import UserMixin
 from . import db
 
+user_questions = db.Table('user_questions',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('question_id', db.Integer, db.ForeignKey('questions.id'))
+    )
+
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    id = db.Column(db.Integer, primary_key=True) # Первичный ключ
     email = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
     name = db.Column(db.String(100))
     role = db.Column(db.String(10))
     score = db.Column(db.Integer)
+    user_questions = db.relationship('Questions', 
+        secondary=user_questions, 
+        # lazy='dynamic',
+        backref=db.backref('user_questions', lazy='dynamic')
+        )
 
 
 class Questions(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True) # Первичный ключ
     title = db.Column(db.String(100), unique=True)
     text1 = db.Column(db.String(200))
     answer1 = db.Column(db.String(20))

@@ -1,9 +1,8 @@
-# FLASK AUTH TEST
+# FLASK GAMIX
 
 ## RUN
 ```
-git clone https://github.com/rombintu/flask-auth.git
-cd flask-auth
+cd flask-auth/server
 python3 -m venv venv
 pip install -r requirements.txt
 python
@@ -12,3 +11,9 @@ python
 >>> exit
 flask run
 ```
+
+## RUN ON HTTPS
+```
+python3 -m flask run --cert=cert.pem --key=key.pem 
+```
+

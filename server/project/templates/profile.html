@@ -2,33 +2,43 @@
 
 {% block content %}
 <h1 class="title">
-    Pool questions
+    Личный кабинет: {{name}}
 </h1>
 <div class="box">
-  <div style="display: flex; justify-content: space-between; ">
-    <p>Name: {{name}}</p>
-    <p>My score: {{score}}/100</p>
-  </div>
-  <progress class="progress is-info" value="{{score}}" max="100">45%</progress>
+  {% if role == 'admin' %}
+    <p>Мои баллы: 999/100</p>
+    <progress class="progress is-info" value="100" max="100">score</progress>
+  {% else %}
+    <p>Мои баллы: {{score}}/100</p>
+    <progress class="progress is-info" value="{{score}}" max="100">score</progress>
+  {% endif %}
 </div>
 
 {% if questions %}
   {% for question in questions %}
     <div class="box" style="display: flex; justify-content: space-between; align-items: center;">
       <p class="title" style="color: gray;">{{question.title}}</p>
-      <a href="/question/{{question.id}}"><button class="button is-info">View it</button></a>
+      <div style="display: flex; left: 80%;">
+        {% if role == 'admin' %}
+          <form action="/delete" method="POST">
+            <input type="submit" class="button is-block is-danger" value="Удалить" style="margin-right: 10px;">
+            <input value="{{question.id}}" type="hidden" name="id">
+          </form>
+        {% endif %}
+        <a href="/question/{{question.id}}"><button class="button is-info">Посмотреть</button></a>
+      </div>
     </div>
   {% endfor %}
   
 {% else %}
   <div class="box" style="display: flex; justify-content: space-between;">
-    <p>Not found questions</p>
-    <a href="/profile"><button class="button is-info">Update</button></a>
+    <p>Новых тестов нет</p>
+    <a href="/profile"><button class="button is-info">Обновить</button></a>
   </div>
 {% endif %}
 
 {% if role == 'admin' %}
-  <a href="/add"><button class="button is-info">Add new question</button></a>
+  <a href="/add"><button class="button is-info">Добавить новый тест</button></a>
 {% endif %}
 
 {% endblock %}
