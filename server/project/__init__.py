@@ -13,8 +13,8 @@ def create_app():
     # app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
     app.config['SECRET_KEY'] = 'secret-123'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    # app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://test:password@localhost:5432/gamix"
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://test:password@localhost:5432/gamix"
+    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     db.init_app(app)
 
 
