@@ -18,8 +18,8 @@ def create_app():
     # без этой строчки вылетают предупреждения, там и написано ее включить
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     # следующие две строчки для свича бд, если нужна postgres, расскомментить
-    app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://test:password@localhost:5432/gamix"
-    # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+    # app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://test:password@localhost:5432/gamix"
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
     # Инициализация приложения
     db.init_app(app)
 
